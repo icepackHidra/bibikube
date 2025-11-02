@@ -1,0 +1,26 @@
+# Cloudflare Tunnel Helm chart values
+
+# Cloudflare configuration
+cloudflare:
+  account: ${account_id}
+  tunnelName: ${tunnel_name}
+  tunnelId: ${tunnel_id}
+  secret: ${tunnel_secret}
+  enableWarp: false
+  ingress:
+  - hostname: argocd.${root_domain}
+    service: http://argocd-server.argocd.svc.cluster.local:80
+
+  #le nom du service + le nom du namespace + svc.cluster.local : valable pour toutes les ressources dans kube 
+
+# Resource configuration
+resources:
+  requests:
+    cpu: 50m
+    memory: 50Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# High availability settings
+replicaCount: 2 

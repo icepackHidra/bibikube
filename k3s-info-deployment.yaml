@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k3s-info-deployment
+  namespace: demo-k3s
+  labels:
+    app: k3s-info
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k3s-info # quel pod tu gères
+  template:   # quel pod tu crées
+    metadata:
+      labels:
+        app: k3s-info
+    spec:
+      nodeSelector:
+        kubernetes.io/role: worker
+      containers:
+        - name: k3s-dockerinho
+          image: icepackhidra/k3sinfo-flask:1.0.1
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          ports:
+            - containerPort: 8080
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 5
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 5

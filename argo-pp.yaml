@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k3s-info-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:icepackHidra/k3sbibiz.git
+    targetRevision: HEAD
+    path: deployments/
+  destination:
+    server: https://192.168.1.111:6443
+    namespace: demo-k3s
+  syncPolicy:
+    automated:      
+      selfHeal: true      

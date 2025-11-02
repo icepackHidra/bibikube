@@ -1,0 +1,28 @@
+# Cloudflare Tunnel Helm chart values
+
+# Cloudflare configuration
+cloudflare:
+  account: b929dd9bfa1c81b241d55e2ceaac00de
+  tunnelName: k3s-info
+  tunnelId: 4e6549c2-4458-4355-a701-d3644c862b35
+  secret: NGQ0YTc3OWMtN2UxNy00NGUzLWE3ZTctZDEzODNjNmQ3Y2Yx
+  enableWarp: false
+  ingress:
+  - hostname: k3s-info.neuneuille.com
+    service: http://k3s-info.demo-k3s.svc.cluster.local:80
+  - hostname: k3s-info-resilient.neuneuille.com
+    service: http://k3s-info-resilient.demo-k3s.svc.cluster.local:80
+
+  #le nom du service + le nom du namespace + svc. /// cluster.local (l'ip du cluster): valable pour toutes les ressources dans kube 
+
+# Resource configuration
+resources:
+  requests:
+    cpu: 50m
+    memory: 50Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# High availability settings
+replicaCount: 2 
